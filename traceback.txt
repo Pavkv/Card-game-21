@@ -1,8 +1,8 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/script.rpy", line 76, in script
-    "[g21.result]"
+  File "game/script.rpy", line 2, in script
+    "Let's play a game of 21!"
   File "renpy/common/00action_menu.rpy", line 220, in __call__
     layout.yesno_screen(layout.QUIT, Quit(False))
   File "renpy/common/00layout.rpy", line 527, in yesno_screen
@@ -14,8 +14,8 @@ AttributeError: 'Layout' object has no attribute 'yesno_prompt'
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "game/script.rpy", line 76, in script
-    "[g21.result]"
+  File "game/script.rpy", line 2, in script
+    "Let's play a game of 21!"
   File "renpy/ast.py", line 721, in execute
     renpy.exports.say(who, what, *args, **kwargs)
   File "renpy/exports.py", line 1419, in say
@@ -49,4 +49,4 @@ AttributeError: 'Layout' object has no attribute 'yesno_prompt'
 Windows-10-10.0.26100
 Ren'Py 7.4.11.2266
  
-Sun Aug 17 12:33:36 2025
+Thu Aug 28 16:18:22 2025

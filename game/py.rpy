@@ -79,6 +79,12 @@ init python:
     
     def player_hit():
         g21._draw_one(g21.player)
-        if g21.player.total21() >= 21 or g21.first_player_index == 1:
+        if g21.player.total21() >= 21:
             g21.finalize()
         compute_hand_layout()
+
+    def player_pass():
+        if g21.state == "player_turn" and g21.result is None and g21.first_player == g21.player:
+            g21.state = "opponent_turn"
+        else:
+            g21.finalize()

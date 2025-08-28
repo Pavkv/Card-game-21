@@ -1,9 +1,10 @@
 from Classes.Card import Card
 
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, aces_low=False):
         self.name = name
         self.hand = []
+        self.aces_low = aces_low
 
     def __str__(self):
         return "Player {} has {} cards: {}".format(
@@ -35,7 +36,20 @@ class Player:
         return min(trump_cards, key=lambda card: Card.rank_values[card.rank])
 
     def total21(self):
-        return sum(c.points21() for c in self.hand)
+        total = 0
+        aces = 0
+        for c in self.hand:
+            pts = Card.points21_map[c.rank]
+            if c.rank == 'A':
+                aces += 1
+            total += pts
+
+        if self.aces_low:
+            while total > 21 and aces > 0:
+                total -= 10
+                aces -= 1
+
+        return total
 
     def is_bust21(self):
         return self.total21() > 21

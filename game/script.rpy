@@ -1,4 +1,15 @@
 label start:
+    "Let's play a game of 21!"
+    menu:
+        "Одна карта":
+            $ n = 1
+        "Две карты":
+            $ n = 2
+    menu:
+        "Туз как 1":
+            $ aces_low = True
+        "Туз как 11":
+            $ aces_low = False
     $ player_name = renpy.input("Введите ваше имя", length=20)
     $ opponent_name = "Противник"
     $ cards_bg = "images/bg/bg_14.jpg"
@@ -6,9 +17,9 @@ label start:
     $ base_card_img_src = "cards"
     $ biased_draw = ["opponent", 0.5]
     python:
-        g21 = Game21(player_name, opponent_name, biased_draw)
+        g21 = Game21(player_name, opponent_name, biased_draw, n, aces_low=aces_low)
         base_cover_img_src = base_card_img_src + "/cover.png"
-        g21.opponent.avatar = durak_avatar
+        g21.opponent.avatar = card_game_avatar
         g21.start_round()
         compute_hand_layout()
 
@@ -48,6 +59,7 @@ label g21_game_loop:
     if g21.state == "result":
 #         $ renpy.block_rollback()
         $ print("Game Over: ", g21.result)
+        jump g21_game_over
 
     if g21.state == "opponent_turn":
 #         $ renpy.block_rollback()
@@ -58,14 +70,16 @@ label g21_game_loop:
                 g21._draw_one(g21.opponent)
                 if g21.opponent.total21() >= 21:
                     g21.finalize()
-            elif opponent_move == 'p' and g21.first_player_index == 1:
+            elif opponent_move == 'p' and g21.first_player == g21.opponent:
                 g21.state = "player_turn"
             else:
                 g21.finalize()
             compute_hand_layout()
-            print(g21.opponent.total21(), g21.opponent.hand)
 
     call screen game21
     jump g21_game_loop
+
+label g21_game_over:
+    "Игра окончена: [g21.result]"
 
 

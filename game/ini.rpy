@@ -8,7 +8,7 @@ init:
     default cards_bg = None
     default in_game = True
     default durak_results = {}
-    default durak_avatar = None
+    default card_game_avatar = None
     default biased_draw = None
 
     # Card selection and layout state
@@ -43,6 +43,7 @@ init:
     default g21_dealt = []
     default g21_is_dealing = False
     default g21_next_step = True
+    default n = 2
 
     default g21_state_tl = {
         "idle": "Ожидание",

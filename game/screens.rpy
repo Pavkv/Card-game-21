@@ -84,7 +84,7 @@ screen g21_base_ui():
 
     if not deal_cards:
         # Opponent hand layout
-        $ opponent_hand_total = "Цена: " + (str(g21.opponent.total21()) if g21.state == "result" else "##")
+        $ opponent_hand_total = "Цена: " + (str(g21.opponent.total21()) if g21.state == "result" else "#" if g21.opponent.total21() < 10 else "##")
         frame:
             background RoundRect("#b2b3b4", 10)
             xpos 885
@@ -229,6 +229,6 @@ screen game21():
                     style "card_game_button"
                     text_size 25
                     action [
-                        Function(g21.player_pass),
+                        Function(player_pass),
                         Jump("g21_game_loop")
                     ]

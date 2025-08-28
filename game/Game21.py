@@ -6,13 +6,16 @@ from Classes.Player import Player
 from Classes.AI import AI
 
 class Game21:
-    def __init__(self, player_name="Вы", opponent_name="Противник", biased_draw=None):
+    def __init__(self, player_name="Вы", opponent_name="Противник", biased_draw=None, initial_deal=2, aces_low=False):
         self.deck = Deck()
-        self.player = Player(player_name)
-        self.opponent = AI(opponent_name)
-        self.first_player_index = None
+        self.player = Player(player_name, aces_low)
+        self.opponent = AI(opponent_name, aces_low)
+        self.first_player = None
         self.state = "idle"
         self.result = None
+
+        self.initial_deal = initial_deal
+        self.aces_low = aces_low
 
         self.bias = {"player": 0.0, "opponent": 0.0}
         if biased_draw:
@@ -39,8 +42,8 @@ class Game21:
             who.hand.append(c)
         return c
 
-    def _deal_two_each(self):
-        for _ in range(2):
+    def _deal_n_each(self):
+        for _ in range(self.initial_deal):
             self._draw_one(self.player)
             self._draw_one(self.opponent)
 
@@ -58,19 +61,14 @@ class Game21:
         self._clear_hands()
         self.result = None
         self.state = "initial_deal"
-        self._deal_two_each()
+        self._deal_n_each()
         if self._instant_check():
             return
 
-        if self.first_player_index is None:
-            self.first_player_index = random.choice([0, 1])
+        if self.first_player is None:
+            self.first_player = random.choice([self.player, self.opponent])
 
-        order0 = self.player if self.first_player_index == 0 else self.opponent
-        self.state = "player_turn" if order0 is self.player else "opponent_turn"
-
-    def player_pass(self):
-        if self.state == "player_turn" and self.result is None:
-            self.state = "opponent_turn"
+        self.state = "player_turn" if self.first_player == self.player else "opponent_turn"
 
     def opponent_turn(self):
         return self.opponent.decide(seen_cards=list(self.opponent.hand), opponent_total=self.player.total21())
